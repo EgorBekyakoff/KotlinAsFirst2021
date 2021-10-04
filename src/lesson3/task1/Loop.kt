@@ -74,25 +74,16 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var CNum = 0 // Count
-    var An = n // n
-    if (n % 10 == 0) {
-        CNum++
-        An / 10
-    }
-    var Bn = 0
-    while (An > 0) {
-        Bn = An % 10
-        An /= 10
-        if (Bn != 0) CNum++
-        else {
-            if (An % 10 == 0) break
-        }
+    var r = 1
+    var x1 = n
+    while (x1 >= 10){
 
+        r++
+        x1 /= 10
     }
-    return CNum
+    return r
+    }
 
-}
 
 
 /**
@@ -179,6 +170,7 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
+    if(m == 1 && n == 1) return 1
     var a1 = 1
     while (true) {
         a1++

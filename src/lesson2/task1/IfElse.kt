@@ -185,10 +185,11 @@ else -> 4
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int { return when {
-    b <= c && d <= a -> -1
-    c <= b && a <= c -> min(b, d) - c
-    (a <= d) && (c <= a) -> min(b, d) - a
-    b == c -> 0
-    else -> -1
+        b < c -> -1
+        a in c..d && b in c..d -> b - a
+        c in a..b && d in a..b -> d - c
+        a !in c..d && b in c..d -> b - c
+        a in c.. d && b !in c..d -> d - a
+        else -> -1
 }
 }
