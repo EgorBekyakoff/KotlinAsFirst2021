@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -76,14 +77,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var r = 1
     var x1 = n
-    while (x1 >= 10){
+    while (x1 >= 10) {
 
         r++
         x1 /= 10
     }
     return r
-    }
-
+}
 
 
 /**
@@ -170,12 +170,17 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    if(m == 1 && n == 1) return 1
-    var a1 = 1
-    while (true) {
-        a1++
-        if (a1 % m == 0 && a1 % n == 0) return a1
+    if (m == 1 && n == 1) return 1 else{
+        if (m == n) return n else {
+            var a1 = 1
+            while (a1 < m * n) {
+                a1++
+                if (a1 % m == 0 && a1 % n == 0) return a1
+            }
+            return a1
+        }
     }
+    return -1
 }
 
 /**
@@ -186,7 +191,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for(i in 2..max(m, n)){
+    for (i in 2..max(m, n)) {
         if (m % i == 0 && n % i == 0) return false
     }
     return true
@@ -203,7 +208,7 @@ fun revert(n: Int): Int {
     var i = 0
     var temp = 0
     var n1 = n
-    while(n1 > 0){
+    while (n1 > 0) {
         temp = n1 % 10
         n1 /= 10
         i = i * 10 + temp
@@ -234,11 +239,11 @@ fun hasDifferentDigits(n: Int): Boolean {
     var n1 = n
     var prev = 0
     var cur = n % 10
-    while(n1 >= 1){
+    while (n1 >= 1) {
         prev = n1 % 10
         n1 /= 10
-        if(n1 >= 1){
-        cur = n1 % 10
+        if (n1 >= 1) {
+            cur = n1 % 10
         }
         if (cur != prev) return true
     }
@@ -276,7 +281,47 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    fun LenOf(x: Int): Int {
+        var r = 1
+        var x1 = x
+        while (x1 >= 10) {
+
+            r++
+            x1 /= 10
+        }
+        return r
+    }
+
+    fun NumOf(x: Int, y: Int): Int {
+        var x1 = x
+        var y1 = y
+        var i = if (!(y1 <= 0 || y1 > LenOf(x1))) {
+            y1 = LenOf(x1) - y1 + 1
+            while (y1 > 1) {
+                x1 /= 10
+                y1--
+            }
+            return x1 % 10
+        } else return -1
+
+        return i
+    }
+
+    if(n == 1) return 1 else {
+        var len = 0
+        var j = 1
+        var cur = 1
+        while (len + LenOf(j) < n) {
+            len += LenOf(j)
+            cur++
+            j = cur * cur
+        }
+        return NumOf(j, n - len)
+    }
+    return -1
+}
+
 
 /**
  * Сложная (5 баллов)
@@ -291,35 +336,35 @@ fun fibSequenceDigit(n: Int): Int {
     fun LenOf(x: Int): Int {
         var r = 1
         var x1 = x
-        while (x1 >= 10){
+        while (x1 >= 10) {
 
             r++
             x1 /= 10
         }
         return r
     }
+
     fun NumOf(x: Int, y: Int): Int {
         var x1 = x
         var y1 = y
-        var i = if (!(y1 <= 0 || y1 > LenOf(x1))){
+        var i = if (!(y1 <= 0 || y1 > LenOf(x1))) {
             y1 = LenOf(x1) - y1 + 1
-            while(y1 > 1){
+            while (y1 > 1) {
                 x1 /= 10
                 y1--
             }
-             return x1 % 10
-        }
-            else return -1
+            return x1 % 10
+        } else return -1
 
         return i
     }
-    if(n < 3) return 1
-    else{
+    if (n < 3) return 1
+    else {
         var len = 2
         var prev = 1
         var cur = 1
         var temp = prev + cur
-        while(len + LenOf(temp) < n){
+        while (len + LenOf(temp) < n) {
             len += LenOf(temp)
             prev = cur
             cur = temp
