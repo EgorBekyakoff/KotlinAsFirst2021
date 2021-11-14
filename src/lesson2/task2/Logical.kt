@@ -41,14 +41,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int = 28 + ((month + month / 8) % 2) + 2 % month + ((1 + (1 - (year % 4 + 2) % (year % 4 + 1)) * ((year % 100 + 2) % (year % 100 + 1)) + (1 - (year % 400 + 2) % (year % 400 + 1))) / month) + 1 / month -(((1 - (year % 4 + 2) % (year % 4 + 1)) * ((year % 100 + 2) % (year % 100 + 1)) + (1 - (year % 400 + 2) % (year % 400 + 1))) / month)
+fun daysInMonth(month: Int, year: Int):
+        Int = (28 + ((month + (month / 8)) % 2) + (2 % month) + ((1 + ((1 - (((year % 4) + 2) % ((year % 4) + 1))) *
+        (((year % 100) + 2) % ((year % 100) + 1))) + (1 - (((year % 400) + 2) % ((year % 400) + 1)))) / month) +
+        (1 / month)) - ((((1 - (((year % 4) + 2) % ((year % 4) + 1))) * (((year % 100) + 2) % ((year % 100) + 1))) +
+        (1 - (((year % 400) + 2) % ((year % 400) + 1)))) / month)
 
-    //when{
-    //((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) && month == 12 -> 28 + 1 + (month + month / 8) % 2 + 2 % month + 2 * (1 / month)
-
-
-    //else -> 28 + (month + month / 8) % 2 + 2 % month + 2 * (1 / month)
-//}
 
 /**
  * Простая (2 балла)

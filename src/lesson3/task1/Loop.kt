@@ -282,7 +282,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    fun LenOf(x: Int): Int {
+    fun lenOf(x: Int): Int {
         var r = 1
         var x1 = x
         while (x1 >= 10) {
@@ -293,11 +293,11 @@ fun squareSequenceDigit(n: Int): Int {
         return r
     }
 
-    fun NumOf(x: Int, y: Int): Int {
+    fun numOf(x: Int, y: Int): Int {
         var x1 = x
         var y1 = y
-        var i = if (!(y1 <= 0 || y1 > LenOf(x1))) {
-            y1 = LenOf(x1) - y1 + 1
+        var i = if (!(y1 <= 0 || y1 > lenOf(x1))) {
+            y1 = lenOf(x1) - y1 + 1
             while (y1 > 1) {
                 x1 /= 10
                 y1--
@@ -312,12 +312,12 @@ fun squareSequenceDigit(n: Int): Int {
         var len = 0
         var j = 1
         var cur = 1
-        while (len + LenOf(j) < n) {
-            len += LenOf(j)
+        while (len + lenOf(j) < n) {
+            len += lenOf(j)
             cur++
             j = cur * cur
         }
-        return NumOf(j, n - len)
+        return numOf(j, n - len)
     }
     return -1
 }

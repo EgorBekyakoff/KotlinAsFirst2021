@@ -93,12 +93,17 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = when{
-    t1 * v1 > (t1 * v1 + t2 * v2 + t3  * v3) / 2 -> (t1 * v1 + t2 * v2 + t3 * v3) / v1 / 2
-    t1 * v1 + t2 * v2 > (t1 * v1 + t2 * v2 + t3  * v3) / 2 -> t1 + ((t1 * v1 + t2 * v2 + t3 * v3) / 2 - t1 * v1 ) / v2
-    t1 * v1 + t2 * v2 + t3 * v3 > (t1 * v1 + t2 * v2 + t3  * v3) / 2 -> t1 + t2 + (((t1 * v1 + t2 * v2 + t3 * v3) / 2 - t1 * v1 - t2 * v2) / v3)
+): Double {
+    val a = t1 * v1
+    val b = t2 * v2
+    val c = t3 * v3
+    return when{
+        a > (a + b + c) / 2 -> (a + b + c) / v1 / 2
+        a + b > (a + b + c) / 2 -> t1 + ((a + b + c) / 2 - a ) / v2
+        a + b + c > (a + b + c) / 2 -> t1 + t2 + (((a + b + c) / 2 - a - b) / v3)
 
-    else -> -1.0
+        else -> -1.0
+    }
 }
 //{
    // val s = ((t1 * v1 + t2 * v2 + t3 * v3) / 2)
@@ -129,12 +134,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int = when{
-    ((kingX == rookX1 || kingX == rookX2) && (rookX1 != rookX2)) && ((kingY == rookY1 || kingY == rookY2) && (rookY1 != rookY2)) -> 3
+    (((kingX == rookX1) || (kingX == rookX2)) &&
+            (rookX1 != rookX2)) && (((kingY == rookY1) || (kingY == rookY2)) && (rookY1 != rookY2)) -> 3
     (kingX == rookX1 && (rookX2 !in kingX..rookX1)) || (kingY == rookY1 && (rookY2 !in kingY..rookY1)) -> 1
     (kingX == rookX2 && (rookX1 !in kingX..rookX2)) || (kingY == rookY2 && (rookY1 !in kingY..rookY2)) -> 2
     kingX != rookX1 && kingX != rookX2 && kingY != rookY1 && kingY != rookY2 -> 0
     else -> 5
-    //    ((((kingX == rookX1) && (((rookY1 != rookY2) || ((rookX2 < kingX) && (rookX2 > kingX))) || ((rookY1 != rookY2) || ((rookX2 > kingX) && (rookX2 < kingX))))) || ((kingY == rookY1) && (((rookY2 < kingY) && (rookY2 > kingY)) || ((rookY2 > kingY) && (rookY2 < kingY)))))) -> 1
 }
 
 /**
@@ -166,15 +171,19 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = when {
-    a + b <= c || a + c <= b || b + c <= a -> -1
-    ((maxOf(a, b, c) * maxOf(a, b, c)) == a * a + b * b + c * c - (maxOf(a, b, c) * maxOf(a, b, c))) -> 1
-    ((maxOf(a, b, c) * maxOf(a, b, c)) / (a * a + b * b + c * c - (maxOf(a, b, c) * maxOf(a, b, c)) - 2 * a * b * c / maxOf(a, b, c))) < 0 -> 1
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+val m = maxOf(a, b, c)
+    val v = a * a + b * b + c * c - 2 * (m * m)
+    return when{
+        a * a + b * b + c * c - 2 * (m * m) == 0.0 -> 1
+        a + b <= c || a + c <= b || b + c <= a -> -1
+        a * a + b * b + c * c - 2 * (m * m) > 0 -> 0
+        a * a + b * b + c * c - 2 * (m * m) < 0 -> 2
 
-    a + b <= c || a + c <= b || b + c <= a -> -1
+        a + b <= c || a + c <= b || b + c <= a -> -1
 else -> 4
 }
-
+}
 
 /**
  * Средняя (3 балла)
