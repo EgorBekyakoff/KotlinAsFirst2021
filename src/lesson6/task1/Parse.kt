@@ -2,8 +2,6 @@
 
 package lesson6.task1
 
-import java.lang.NumberFormatException
-
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -77,9 +75,6 @@ fun main() {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val vesokos = listOf(1880, 1884, 1888, 1892, 1896, 1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940,
-        1944, 1948, 1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012,
-        2016, 2020, 2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060, 2064, 2068, 2072)
     val months = listOf("января",
         "февраля",
         "марта",
@@ -96,9 +91,9 @@ fun dateStrToDigit(str: String): String {
     if (date.size == 3) {
         try {
             val day = date[0].toInt()
-            if ((date[1] in months) && (day in 1..31) && date[2].length > 3) {
+            if ((date[1] in months) && (day in 1..31)) {
                 val month = months.indexOf(date[1]) + 1
-                if (month == 2 && date[2].toInt() !in vesokos && day >= 29) return ""
+                if (month == 2 && !((date[2].toInt() % 4 == 0) && (date[2].toInt() % 100 != 0) || (date[2].toInt() % 400 == 0)) && day >= 29) return ""
                 return String.format("%02d.%02d.%d", day, month, date[2].toInt())
             } else return ""
         } catch (e: NumberFormatException) {
@@ -119,9 +114,6 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val vesokos = listOf(1880, 1884, 1888, 1892, 1896, 1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940,
-        1944, 1948, 1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012,
-        2016, 2020, 2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060, 2064, 2068, 2072)
     val months = listOf("января",
         "февраля",
         "марта",
@@ -138,7 +130,7 @@ fun dateDigitToStr(digital: String): String {
         if (date.size == 3) {
             val day = date[0].toInt()
             val month = date[1].toInt()
-            if (month == 2 && date[2].toInt() !in vesokos && day >= 29) return ""
+            if (month == 2 && !((date[2].toInt() % 4 == 0) && (date[2].toInt() % 100 != 0) || (date[2].toInt() % 400 == 0)) && day >= 29) return ""
             if (day in 1..31 && month in 1..12 && date[2].length > 3)
                 return ("$day ${months[month - 1]} ${date[2]}")
             else
@@ -163,7 +155,12 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String = when {
+    (!phone.contains(Regex("""\( *\)""")) && !phone.matches(Regex("""\+ ?\d""")) &&
+            phone.matches(Regex("""(\+? *\d[- \d]*(\([-\d ]+\)[-\d ]+)?)"""))) ->
+        phone.filter { it !in "(" && it !in ")" && it !in "-" && it !in " " }
+    else -> ""
+}
 
 /**
  * Средняя (5 баллов)
