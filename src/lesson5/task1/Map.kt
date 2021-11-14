@@ -166,6 +166,8 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    if(mapA == null) return mapB
+    if(mapB == null) return mapA
     val sub = subtractOf(mapA.toMutableMap(), mapB.toMutableMap())
     for((k, v) in mapB) if(sub[k].isNullOrEmpty()) sub[k] = v
     else sub[k] += ", " + mapB[k]
