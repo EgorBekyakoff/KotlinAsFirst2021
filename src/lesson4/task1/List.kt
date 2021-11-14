@@ -242,7 +242,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    if (n == 0) return listOf()
+    if (n == 0) return listOf(0)
     var l = mutableListOf<Int>()
     var a = n
     while(a > 0){
@@ -264,12 +264,14 @@ return l.reversed()
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val alpha = "abcdefghijklmnopqrstuvwxyz"
-    var str = ""
-    val l = convert(n, base)
-    for(i in l.indices)
-        str += if(l[i] < 10) l[i] else alpha[l[i] - 10]
-    return str
+    if (n == 0) return "0" else{
+        val alpha = "abcdefghijklmnopqrstuvwxyz"
+        var str = ""
+        val l = convert(n, base)
+        for(i in l.indices)
+            str += if(l[i] < 10) l[i] else alpha[l[i] - 10]
+        return str
+    }
 }
 
 /**
