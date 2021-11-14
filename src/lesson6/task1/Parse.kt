@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.lang.NumberFormatException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +76,37 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val vesokos = listOf(1880, 1884, 1888, 1892, 1896, 1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940,
+        1944, 1948, 1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012,
+        2016, 2020, 2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060, 2064, 2068, 2072)
+    val months = listOf("января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря")
+    val date = str.split(" ")
+    if (date.size == 3) {
+        try {
+            val day = date[0].toInt()
+            if ((date[1] in months) && (day in 1..31)) {
+                val month = months.indexOf(date[1]) + 1
+                if (month == 2 && date[2].toInt() !in vesokos && day >= 29) return ""
+                return String.format("%02d.%02d.%d", day, month, date[2].toInt())
+            } else return ""
+        } catch (e: NumberFormatException) {
+            return ""
+        }
+    } else return ""
+}
+
 
 /**
  * Средняя (4 балла)
@@ -86,7 +118,36 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val vesokos = listOf(1880, 1884, 1888, 1892, 1896, 1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940,
+        1944, 1948, 1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012,
+        2016, 2020, 2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060, 2064, 2068, 2072)
+    val months = listOf("января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря")
+    try { val date = digital.split(".")
+        if (date.size == 3) {
+            val day = date[0].toInt()
+            val month = date[1].toInt()
+            if (month == 2 && date[2].toInt() !in vesokos && day >= 29) return ""
+            if (day in 1..31 && month in 1..12)
+                return ("$day ${months[month - 1]} ${date[2]}")
+            else
+                return ""
+        } else return ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+}
 
 /**
  * Средняя (4 балла)
