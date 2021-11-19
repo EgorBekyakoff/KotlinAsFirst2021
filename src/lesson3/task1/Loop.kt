@@ -333,7 +333,7 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    fun LenOf(x: Int): Int {
+    fun lenOf(x: Int): Int {
         var r = 1
         var x1 = x
         while (x1 >= 10) {
@@ -347,8 +347,8 @@ fun fibSequenceDigit(n: Int): Int {
     fun NumOf(x: Int, y: Int): Int {
         var x1 = x
         var y1 = y
-        var i = if (!(y1 <= 0 || y1 > LenOf(x1))) {
-            y1 = LenOf(x1) - y1 + 1
+        var i = if (!(y1 <= 0 || y1 > lenOf(x1))) {
+            y1 = lenOf(x1) - y1 + 1
             while (y1 > 1) {
                 x1 /= 10
                 y1--
@@ -364,8 +364,8 @@ fun fibSequenceDigit(n: Int): Int {
         var prev = 1
         var cur = 1
         var temp = prev + cur
-        while (len + LenOf(temp) < n) {
-            len += LenOf(temp)
+        while (len + lenOf(temp) < n) {
+            len += lenOf(temp)
             prev = cur
             cur = temp
             temp = prev + cur
