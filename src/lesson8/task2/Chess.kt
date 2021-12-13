@@ -2,6 +2,8 @@
 
 package lesson8.task2
 
+import kotlin.math.abs
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -32,7 +34,11 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    require(notation.length == 2)
+    require(notation[0] in 'a'..'h' && notation[1] in '1'..'8')
+    return Square(notation[0] - 'a' + 1, notation[1] - '0')
+}
 
 /**
  * Простая (2 балла)
@@ -118,7 +124,28 @@ fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    require(start.inside() && end.inside())
+    val track = mutableListOf<Square>()
+    if (start == end) {
+        track.add(start)
+        return track
+    }
+    if ((start.column % 2 == start.row % 2) != (end.column % 2 == end.row % 2))
+        return track
+    track.add(start)
+    if (abs(start.row - end.row) != abs(start.column - end.column)) {
+        var temp = Square(0, 0)
+        for (i in 1..8)
+            for (j in 1..8)
+                if (abs(j - start.row) == abs(i - start.column) && abs(j - end.row) == abs(i - end.column))
+                    temp = Square(i, j)
+        track.add(temp)
+    }
+    track.add(end)
+    return track
+}
 
 /**
  * Средняя (3 балла)
