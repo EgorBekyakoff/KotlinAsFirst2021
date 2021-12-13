@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -96,17 +97,17 @@ fun sibilants(inputName: String, outputName: String) {
     val replacement = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
     val symbols = listOf('ж', 'ч', 'ш', 'щ')
     val output = File(outputName).bufferedWriter()
-    for (l in File(inputName).readLines()) {
+    for (string in File(inputName).readLines()) {
         var temp = ""
         var len = ""
-        for (i in l.indices)
+        for (i in string.indices)
             if (temp == "") {
-                if ((l[i].toLowerCase() in symbols) && (i != l.length - 1))
-                    if (l[i + 1] in replacement.keys)
-                        temp = replacement[l[i + 1]].toString()
-                    else if (l[i + 1].toLowerCase() in replacement.keys)
-                        temp = replacement[l[i + 1].toLowerCase()].toString().toUpperCase()
-                len += l[i].toString() + temp
+                if ((string[i].lowercaseChar() in symbols) && (i != string.length - 1))
+                    if (string[i + 1] in replacement.keys)
+                        temp = replacement[string[i + 1]].toString()
+                    else if (string[i + 1].lowercaseChar() in replacement.keys)
+                        temp = replacement[string[i + 1].lowercaseChar()].toString().uppercase(Locale.getDefault())
+                len += string[i].toString() + temp
             } else
                 temp = ""
         output.write(len)
