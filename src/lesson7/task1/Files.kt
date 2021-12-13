@@ -63,7 +63,8 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    File(inputName).useLines { filter -> "_" }
 }
 
 /**
@@ -92,7 +93,26 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val replacement = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
+    val symbols = listOf('ж', 'ч', 'ш', 'щ')
+    val output = File(outputName).bufferedWriter()
+    for (l in File(inputName).readLines()) {
+        var temp = ""
+        var len = ""
+        for (i in l.indices)
+            if (temp == "") {
+                if ((l[i].toLowerCase() in symbols) && (i != l.length - 1))
+                    if (l[i + 1] in replacement.keys)
+                        temp = replacement[l[i + 1]].toString()
+                    else if (l[i + 1].toLowerCase() in replacement.keys)
+                        temp = replacement[l[i + 1].toLowerCase()].toString().toUpperCase()
+                len += l[i].toString() + temp
+            } else
+                temp = ""
+        output.write(len)
+        output.newLine()
+    }
+    output.close()
 }
 
 /**
@@ -113,7 +133,24 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var max = 0
+
+    for (line in File(inputName).readLines())
+        if (line.trim().length > max)
+            max = line.trim().length
+    val output = File(outputName).bufferedWriter()
+    for (string in File(inputName).readLines())
+    {
+        var temp = (max - string.trim().length) / 2
+        while (temp > 0)
+        {
+            output.write(" ")
+            temp--
+        }
+        output.write(string.trim())
+        output.newLine()
+    }
+    output.close()
 }
 
 /**
