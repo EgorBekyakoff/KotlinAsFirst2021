@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -122,7 +123,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double = when{
     v.isEmpty() -> 0.0
-    else -> sqrt(v.map { it * it }.sum())
+    else -> sqrt(v.sumOf { it * it })
 }
 
 /**
@@ -163,7 +164,7 @@ fun center(list: MutableList<Double>): MutableList<Double> = when{
 fun times(a: List<Int>, b: List<Int>): Int = when{
     a.isEmpty() || b.isEmpty() -> 0
     else -> { var res = 0
-        for(i in 0 until a.size)
+        for(i in a.indices)
             res += a[i] * b[i]
         res
     }
@@ -180,7 +181,7 @@ fun times(a: List<Int>, b: List<Int>): Int = when{
 fun polynom(p: List<Int>, x: Int): Int = when{
     p.isEmpty() -> 0
     else -> { var num = 0
-        for (i in 0 until p.size)
+        for (i in p.indices)
             num += (p[i] * Math.pow(x.toDouble(), i.toDouble())).toInt()
         num
     }
@@ -245,7 +246,7 @@ fun convert(n: Int, base: Int): List<Int> {
     if (n == 0) return listOf(0)
     var l = mutableListOf<Int>()
     var a = n
-    while(a > 0){
+    while (a > 0) {
         l.add(a % base)
         a /= base
     }
@@ -264,13 +265,13 @@ return l.reversed()
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    if (n == 0) return "0" else{
+    return if (n == 0) "0" else{
         val alpha = "abcdefghijklmnopqrstuvwxyz"
         var str = ""
         val l = convert(n, base)
-        for(i in l.indices)
-            str += if(l[i] < 10) l[i] else alpha[l[i] - 10]
-        return str
+        for (i in l.indices)
+            str += if (l[i] < 10) l[i] else alpha[l[i] - 10]
+        str
     }
 }
 
@@ -284,8 +285,8 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var l = digits.reversed()
     var n = 0
-    for(i in digits.indices)
-        n += l[i] * Math.pow(base.toDouble(), i.toDouble()).toInt()
+    for (i in digits.indices)
+        n += l[i] * base.toDouble().pow(i.toDouble()).toInt()
     return n
 }
 
@@ -303,8 +304,8 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     val l = mutableListOf<Int>()
-    for(i in str.indices) {
-        if(str[i] in '0'..'9')
+    for (i in str.indices) {
+        if (str[i] in '0'..'9')
             l.add(str[i] - '0')
         else
             l.add(str[i] - 'a' + 10)
