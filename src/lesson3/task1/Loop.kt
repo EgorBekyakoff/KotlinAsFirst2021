@@ -170,17 +170,13 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    if (m == 1 && n == 1) return 1 else{
-        if (m == n) return n else {
-            var a1 = 1
-            while (a1 < m * n) {
-                a1++
-                if (a1 % m == 0 && a1 % n == 0) return a1
-            }
-            return a1
-        }
+    var a = m
+    var b = n
+    while (a != b) {
+        if (a > b) a -= b
+        else b -= a
     }
-    return -1
+    return (n * m) / a
 }
 
 /**
@@ -191,10 +187,15 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..max(m, n)) {
-        if (m % i == 0 && n % i == 0) return false
+    var temp = 0
+    var m1 = m
+    var n1 = n
+    while (n1 != 0) {
+        temp = m1
+        m1 = n1
+        n1 = temp % n1
     }
-    return true
+    return m1 == 1
 }
 
 /**
@@ -344,7 +345,7 @@ fun fibSequenceDigit(n: Int): Int {
         return r
     }
 
-    fun NumOf(x: Int, y: Int): Int {
+    fun numOf(x: Int, y: Int): Int {
         var x1 = x
         var y1 = y
         var i = if (!(y1 <= 0 || y1 > lenOf(x1))) {
@@ -370,7 +371,7 @@ fun fibSequenceDigit(n: Int): Int {
             cur = temp
             temp = prev + cur
         }
-        return NumOf(temp, n - len)
+        return numOf(temp, n - len)
     }
     return -1
 }
